@@ -20,12 +20,14 @@ public class TaskService
 
     public List<TaskItem>? Get(DateTime? date)
     {
-        if(date != null)
+        try
         {
-            var start = date.Value.Date;
-            var end = date.Value.Date.AddDays(1);
+            if (date != null)
+            {
+                var start = date.Value.Date;
+                var end = date.Value.Date.AddDays(1);
 
-            var dateQuery = new BsonDocument
+                var dateQuery = new BsonDocument
             {
                 {
                     "CreatedOn", new BsonDocument
@@ -35,8 +37,16 @@ public class TaskService
                     }
                 }
             };
-            var matchedDocuments = _tasks.Find(dateQuery).ToList();
-            return matchedDocuments.Count == 0 ? null : matchedDocuments;
+                var matchedDocuments = _tasks.Find(dateQuery).ToList();
+                return matchedDocuments;
+
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            Console.WriteLine(ex.StackTrace);
+            return null;
         }
 
         return null;
