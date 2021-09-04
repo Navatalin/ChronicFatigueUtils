@@ -6,7 +6,7 @@ replicaCount: 1
 image:
   repository: navatalin/chronic_fatigue_utils
   tag: main
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
 imagePullSecrets: []
   # Optionally specify an array of imagePullSecrets.
   # Secrets must be manually created in the namespace.
