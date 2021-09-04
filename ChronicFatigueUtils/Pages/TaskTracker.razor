@@ -4,7 +4,7 @@
 @using static ChronicFatigueUtils.Data.TaskEnums
 @inject TaskService TaskService
 
-<h3>TaskTracker</h3>
+<h3>Task Tracker</h3>
 
 <div id="task-tracker-main">
 	Date: <RadzenDatePicker @bind-Value="@pageDate" DateFormat="d" TValue="DateTime?"  Change=@(args => OnChange(args, "dd/MM/yyyy")) />
