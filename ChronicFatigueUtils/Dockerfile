@@ -16,7 +16,7 @@ RUN dotnet build "ChronicFatigueUtils.csproj" -c Release -o /app/build
 FROM build AS publish
 RUN dotnet publish "ChronicFatigueUtils.csproj" -c Release -o /app/publish
 
-FROM base AS final
+FROM mcr.microsoft.com/dotnet/aspnet:6.0.0-preview.7-bullseye-slim-arm64v8
 WORKDIR /app
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "ChronicFatigueUtils.dll"]
