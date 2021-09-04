@@ -32,5 +32,5 @@ jobs:
         context: .
         file: './ChronicFatigueUtils/Dockerfile'
         push: true
-        tags: ${{ steps.meta.outputs.tags }}
+        tags: ${{ env.IMAGE }}:${{ steps.prep.outputs.BUILD_ID }}
         labels: ${{ steps.meta.outputs.labels }}
