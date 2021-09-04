@@ -24,7 +24,7 @@ jobs:
       id: meta
       uses: docker/metadata-action@v3.5.0
       with:
-        images: dylanmccarthy/chronic_fatigue_utils
+        images: navatalin/chronic_fatigue_utils
       
     - name: Build and push Docker image
       uses: docker/build-push-action@v2.7.0
