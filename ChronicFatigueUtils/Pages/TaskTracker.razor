@@ -1,0 +1,120 @@
+﻿@page "/TaskTracker"
+@using ChronicFatigueUtils.Data
+@using ChronicFatigueUtils.Services
+@using static ChronicFatigueUtils.Data.TaskEnums
+@inject TaskService TaskService
+
+<h3>TaskTracker</h3>
+
+<div id="task-tracker-main">
+	Date: <RadzenDatePicker @bind-Value="@pageDate" DateFormat="d" TValue="DateTime?"  Change=@(args => OnChange(args, "dd/MM/yyyy")) />
+	<div id="table-div">
+		<table class="table table-dark">
+			<thead>
+				<tr>
+					<td>Date/Time</td>
+					<td>Task</td>
+					<td>Time Taken</td>
+					<td>How you felt after</td>
+					<td>Did you recover</td>
+					<td>Remove</td>
+				</tr>
+			</thead>
+			<tbody>
+				@if (tasks != null)
+				{
+					@foreach (var t in tasks)
+					{
+						<tr>
+							<td>@t.CreatedOn.ToLocalTime().ToString("dd/MM/yyyy h:mm tt")</td>
+							<td><RadzenTextBox @bind-Value=@t.TaskName Change=@(args => UpdateTask(t))/></td>
+							<td><RadzenNumeric TValue="int" @bind-Value=@((t.TimeTaken)) Change="(int x) => UpdateTimeTaken(x, t)"/></td>
+							<td><RadzenDropDown TValue="string" Data=@FeelAfterList Value=@t.FeelAfter.ToString() Change=@(args => UpdateFeelAfter(args, t))/></td>
+							<td><RadzenDropDown TValue="string" Data=@RecoveryList  Value=@t.Recovery.ToString() Change=@(args => UpdateRecovery(args, t))/></td>
+							<td><RadzenIcon Icon="delete" @onclick="(args => DeleteClicked(t))" Style="cursor:pointer"/></td>
+						</tr>
+					}
+				}
+			</tbody>
+		</table>
+	</div>
+	<input type="button" value="Add New Task" @onclick="(args => NewRowClicked())" />
+
+</div>
+
+
+
+
+@code {
+	DateTime? pageDate = DateTime.Now;
+
+	public List<TaskItem>? tasks;
+	List<string> FeelAfterList;
+	List<string> RecoveryList;
+
+	void OnChange(DateTime? value, string format)
+	{
+		pageDate = value;
+		tasks = TaskService.Get(pageDate);
+	}
+
+	void UpdateFeelAfter(dynamic args, TaskItem t)
+	{
+		var feel = Enum.Parse<FeelAfter>(args);
+		t.FeelAfter = feel;
+		TaskService.Update(t);
+
+	}
+
+	void UpdateRecovery(dynamic args, TaskItem t)
+	{
+		var recovery = Enum.Parse<Recover>(args);
+		t.Recovery = recovery;
+		TaskService.Update(t);
+	}
+
+	void UpdateTimeTaken(int time, TaskItem t)
+	{
+		t.TimeTaken = time;
+		TaskService.Update(t);
+	}
+
+	void UpdateTask(TaskItem t)
+	{
+		TaskService.Update(t);
+	}
+
+	void NewRowClicked()
+	{
+		TaskItem task = new TaskItem();
+		task.CreatedOn = DateTime.Now;
+		TaskService.Create(task);
+		tasks.Add(task);
+	}
+
+	void DeleteClicked(TaskItem task)
+	{
+		TaskService.Remove(task);
+		tasks = TaskService.Get();
+		StateHasChanged();
+	}
+
+	protected override async Task OnInitializedAsync()
+	{
+		FeelAfterList = new List<string>(Enum.GetNames(typeof(FeelAfter)));
+		RecoveryList = new List<string>(Enum.GetNames(typeof(Recover)));
+
+		tasks = TaskService.Get(pageDate);
+		/*
+		tasks.Add(new TaskItem
+		{
+			Id = 1,
+			CreatedOn = DateTime.Now,
+			TaskName = "Testing Task",
+			TimeTaken = 15,
+			FeelAfter = TaskEnums.FeelAfter.Ok,
+			Recovery = TaskEnums.Recover.Yes
+		});
+		*/
+	}
+}
