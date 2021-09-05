@@ -2,6 +2,7 @@ using ChronicFatigueUtils.Data;
 using ChronicFatigueUtils.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Options;
+using Microsoft.JSInterop;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +19,7 @@ builder.Services.AddServerSideBlazor();
 builder.Services.Configure<TaskDatabaseSettings>(Configuration.GetSection(nameof(TaskDatabaseSettings)));
 builder.Services.AddSingleton<ITaskDatabaseSettings>(sp => sp.GetRequiredService<IOptions<TaskDatabaseSettings>>().Value);
 builder.Services.AddSingleton<TaskService>();
+builder.Services.AddLocalization();
 
 var app = builder.Build();
 
@@ -32,6 +34,8 @@ else
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
+app.UseRequestLocalization("en-AU");
 
 app.UseHttpsRedirection();
 
