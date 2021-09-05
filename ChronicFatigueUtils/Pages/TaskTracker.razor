@@ -28,7 +28,7 @@
 					@foreach (var t in tasks)
 					{
 						<tr>
-							<td>@LocalTimeConvert(t.CreatedOn).Result.ToString("dd/MM/yyyy h:mm tt")</td>
+							<td>@LocalTimeConvert(t.CreatedOn).Value.ToString("dd/MM/yyyy h:mm tt")</td>
 							<td><RadzenTextBox @bind-Value=@t.TaskName Change=@(args => UpdateTask(t))/></td>
 							<td><RadzenNumeric TValue="int" @bind-Value=@((t.TimeTaken)) Change="(int x) => UpdateTimeTaken(x, t)"/></td>
 							<td><RadzenDropDown TValue="string" Data=@FeelAfterList Value=@t.FeelAfter.ToString() Change=@(args => UpdateFeelAfter(args, t))/></td>
@@ -48,21 +48,16 @@
 
 
 @code {
-	DateTime? pageDate = DateTime.Now.ToLocalTime();
+	DateTime? pageDate = LocalTimeConvert(DateTime.UtcNow);
 
 	public List<TaskItem>? tasks;
 	List<string> FeelAfterList;
 	List<string> RecoveryList;
 
-	private async Task<DateTime> LocalTimeConvert(DateTime utc)
+	private static DateTime? LocalTimeConvert(DateTime utc)
 	{
-		//TODO: Need better fix for this
-		//int useroffsetmins = await JS.InvokeAsync<int>("blazorGetTimezoneOffset");
-		int useroffsetmins = -600;
-		var useroffset = TimeSpan.FromMinutes(-useroffsetmins);
-		var userDateTime = new DateTimeOffset(utc).ToOffset(useroffset);
-		return userDateTime.DateTime;
-
+		//TODO: Set timezone in config
+		return TimeZoneInfo.ConvertTime(utc, TimeZoneInfo.FindSystemTimeZoneById("AUS Eastern Standard Time"));
 	}
 	void OnChange(DateTime? value, string format)
 	{
