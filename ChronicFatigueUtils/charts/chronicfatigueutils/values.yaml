@@ -5,7 +5,7 @@ fullnameOverride: chronicfatigueutils
 replicaCount: 1
 image:
   repository: navatalin/chronic_fatigue_utils
-  tag: 0.0.10-alpha
+  tag: 0.0.11-alpha
   pullPolicy: Always
 imagePullSecrets: []
   # Optionally specify an array of imagePullSecrets.
