@@ -3,6 +3,7 @@
 @using ChronicFatigueUtils.Services
 @using static ChronicFatigueUtils.Data.TaskEnums
 @inject TaskService TaskService
+@inject IJSRuntime JSRuntime
 
 <h3>Task Tracker</h3>
 
@@ -46,7 +47,7 @@
 
 
 @code {
-	DateTime? pageDate = DateTime.Now;
+	DateTime? pageDate = DateTime.Now.ToLocalTime();
 
 	public List<TaskItem>? tasks;
 	List<string> FeelAfterList;
