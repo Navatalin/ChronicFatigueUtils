@@ -2,8 +2,9 @@
 @using ChronicFatigueUtils.Data
 @using ChronicFatigueUtils.Services
 @using static ChronicFatigueUtils.Data.TaskEnums
+@using Microsoft.JSInterop
 @inject TaskService TaskService
-@inject IJSRuntime JSRuntime
+@inject IJSRuntime JS
 
 <h3>Task Tracker</h3>
 
@@ -27,7 +28,7 @@
 					@foreach (var t in tasks)
 					{
 						<tr>
-							<td>@t.CreatedOn.ToLocalTime().ToString("dd/MM/yyyy h:mm tt")</td>
+							<td>@LocalTimeConvert(t.CreatedOn).Result.ToString("dd/MM/yyyy h:mm tt")</td>
 							<td><RadzenTextBox @bind-Value=@t.TaskName Change=@(args => UpdateTask(t))/></td>
 							<td><RadzenNumeric TValue="int" @bind-Value=@((t.TimeTaken)) Change="(int x) => UpdateTimeTaken(x, t)"/></td>
 							<td><RadzenDropDown TValue="string" Data=@FeelAfterList Value=@t.FeelAfter.ToString() Change=@(args => UpdateFeelAfter(args, t))/></td>
@@ -53,6 +54,16 @@
 	List<string> FeelAfterList;
 	List<string> RecoveryList;
 
+	private async Task<DateTime> LocalTimeConvert(DateTime utc)
+	{
+		//TODO: Need better fix for this
+		//int useroffsetmins = await JS.InvokeAsync<int>("blazorGetTimezoneOffset");
+		int useroffsetmins = -600;
+		var useroffset = TimeSpan.FromMinutes(-useroffsetmins);
+		var userDateTime = new DateTimeOffset(utc).ToOffset(useroffset);
+		return userDateTime.DateTime;
+
+	}
 	void OnChange(DateTime? value, string format)
 	{
 		pageDate = value;
