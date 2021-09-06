@@ -5,7 +5,7 @@ fullnameOverride: chronicfatigueutils
 replicaCount: 1
 image:
   repository: navatalin/chronic_fatigue_utils
-  tag: 0.0.11-alpha
+  tag: 0.0.12-alpha
   pullPolicy: Always
 imagePullSecrets: []
   # Optionally specify an array of imagePullSecrets.
@@ -37,7 +37,14 @@ ingress:
     # - secretName: chart-example-tls
     #   hosts:
     #     - chart-example.local
-secrets: {}
+secrets: {
+    CFUTILS_TaskDatabaseSettings__DBUSER: {
+        db-credentials: 'username'
+    },
+    CFUTILS_TaskDatabaseSettings__DBPASS: {
+        db-credentials: 'password'
+    }
+}
   # Optionally specify a set of secret objects whose values
   # will be injected as environment variables by default.
   # You should add this section to a file like secrets.yaml
