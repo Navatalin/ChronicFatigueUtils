@@ -49,8 +49,17 @@ spec:
             - name: {{ $ref }}_{{ $key }}
               valueFrom:
                 secretKeyRef:
-                  name: {{ template "chronicfatigueutils.fullname" $root }}-{{ $ref | lower }}
+                  name: {{ template "accountingapi.fullname" $root }}-{{ $ref | lower }}
                   key: {{ $key }}
+            {{- end }}
+            {{- end }}
+            {{- range $ref, $values := .Values.envVariables }}
+            {{- range $name, $value := $values }}
+            - name: {{ $ref }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $name }}
+                  key: {{ $value }}
             {{- end }}
             {{- end }}
           resources:

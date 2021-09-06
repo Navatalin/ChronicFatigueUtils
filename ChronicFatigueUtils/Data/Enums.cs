@@ -14,6 +14,7 @@ public static class TaskEnums
     public enum Recover
     {
         Yes,
-        No
+        No,
+        Partial
     }
 }

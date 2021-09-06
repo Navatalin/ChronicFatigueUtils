@@ -112,16 +112,5 @@
 		RecoveryList = new List<string>(Enum.GetNames(typeof(Recover)));
 
 		tasks = TaskService.Get(pageDate);
-		/*
-		tasks.Add(new TaskItem
-		{
-			Id = 1,
-			CreatedOn = DateTime.Now,
-			TaskName = "Testing Task",
-			TimeTaken = 15,
-			FeelAfter = TaskEnums.FeelAfter.Ok,
-			Recovery = TaskEnums.Recover.Yes
-		});
-		*/
 	}
 }

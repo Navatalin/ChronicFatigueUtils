@@ -37,12 +37,16 @@ ingress:
     # - secretName: chart-example-tls
     #   hosts:
     #     - chart-example.local
+
 secrets: {
+}
+
+envVariables: {
     CFUTILS_TaskDatabaseSettings__DBUSER: {
-        db-credentials: 'username'
+        chronicfatigueutils-db-credentials: 'username'
     },
     CFUTILS_TaskDatabaseSettings__DBPASS: {
-        db-credentials: 'password'
+        chronicfatigueutils-db-credentials: 'password'
     }
 }
   # Optionally specify a set of secret objects whose values
