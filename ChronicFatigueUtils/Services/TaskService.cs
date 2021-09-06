@@ -10,7 +10,7 @@ public class TaskService
 
     public TaskService(ITaskDatabaseSettings settings)
     {
-        if(string.IsNullOrWhiteSpace(settings.DBUSER) || string.IsNullOrWhiteSpace(settings.DBPASS){
+        if(string.IsNullOrWhiteSpace(settings.DBUSER) || string.IsNullOrWhiteSpace(settings.DBPASS)){
             Console.WriteLine("Error in getting DB Credentials");
             throw new Exception("Unable to connect to database due to missing credentials");
         }
