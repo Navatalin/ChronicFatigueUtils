@@ -6,17 +6,10 @@ using Microsoft.JSInterop;
 
 var builder = WebApplication.CreateBuilder(args);
 
-IConfiguration Configuration;
-
-Configuration = new ConfigurationBuilder()
-    .SetBasePath(Directory.GetCurrentDirectory())
-    .AddJsonFile("appsettings.json", false)
-    .Build();
-
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-builder.Services.Configure<TaskDatabaseSettings>(Configuration.GetSection(nameof(TaskDatabaseSettings)));
+builder.Services.Configure<TaskDatabaseSettings>(builder.Configuration.GetSection(nameof(TaskDatabaseSettings)));
 builder.Services.AddSingleton<ITaskDatabaseSettings>(sp => sp.GetRequiredService<IOptions<TaskDatabaseSettings>>().Value);
 builder.Services.AddSingleton<TaskService>();
 builder.Services.AddLocalization();
