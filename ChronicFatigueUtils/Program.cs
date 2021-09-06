@@ -7,6 +7,7 @@ using Microsoft.JSInterop;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Configuration.AddEnvironmentVariables(prefix: "CFUTILS_");
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.Configure<TaskDatabaseSettings>(builder.Configuration.GetSection(nameof(TaskDatabaseSettings)));

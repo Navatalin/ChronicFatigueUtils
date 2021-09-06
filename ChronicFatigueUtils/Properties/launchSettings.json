@@ -27,10 +27,12 @@
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "CFUTILS_TaskDatabaseSettings__DBPASS": "CFUser",
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "CFUTILS_TaskDatabaseSettings__DBUSER": "CFUser"
       },
-      "dotnetRunMessages": "true",
-      "applicationUrl": "https://localhost:5001;http://localhost:5000"
+      "applicationUrl": "https://localhost:5001;http://localhost:5000",
+      "dotnetRunMessages": "true"
     }
   }
 }

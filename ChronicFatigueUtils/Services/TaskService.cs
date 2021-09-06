@@ -10,7 +10,15 @@ public class TaskService
 
     public TaskService(ITaskDatabaseSettings settings)
     {
-        var client = new MongoClient(settings.ConnectionString);
+        var credential = MongoCredential.CreateCredential(settings.DatabaseName,settings.DBUSER, settings.DBPASS);
+        var mongoSettings = new MongoClientSettings()
+        {
+            Credential = credential,
+            Server = new MongoServerAddress(settings.Server, settings.ServerPort)
+        };
+
+        var client = new MongoClient(mongoSettings);
+
         var database = client.GetDatabase(settings.DatabaseName);
 
         _tasks = database.GetCollection<TaskItem>("Tasks");
